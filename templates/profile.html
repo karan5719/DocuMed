@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}Profile - DocuMed{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2><i class="fas fa-user me-2"></i>Doctor Profile</h2>
+            <p class="text-muted">Manage your professional information and settings.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-edit me-2"></i>
+                        Edit Profile Information
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="/profile" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name" value="{{ doctor.name }}" readonly>
+                            <small class="text-muted">Name is synced with your Google account</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="medical_registration_number" class="form-label required-field">Medical Registration Number</label>
+                            <input type="text" class="form-control" id="medical_registration_number" name="medical_registration_number" 
+                                   value="{{ doctor.medical_registration_number or '' }}" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="google_id" class="form-label">Google Email ID</label>
+                            <input type="text" class="form-control" id="google_id" name="google_id" 
+                                   value="{{ doctor.google_id or '' }}">
+                            <small class="text-muted">Optional: For future OAuth integration</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="signature" class="form-label">Digital Signature (Optional)</label>
+                            <input type="file" class="form-control" id="signature" name="signature" 
+                                   accept="image/*">
+                            <small class="text-muted">Upload your digital signature (PNG, JPG format). This will appear on certificates.</small>
+                        </div>
+                        
+                        {% if doctor.signature_path %}
+                        <div class="mb-3">
+                            <label class="form-label">Current Signature</label>
+                            <div>
+                                <img src="/{{ doctor.signature_path }}" alt="Signature" style="max-height: 100px; border: 1px solid #ddd;">
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="d-flex justify-content-between">
+                            <a href="/dashboard" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-1"></i>
+                                Back to Dashboard
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i>
+                                Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Account Information
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <strong>Account Status:</strong><br>
+                        <span class="badge bg-success">Active</span>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <strong>Member Since:</strong><br>
+                        {{ doctor.created_at.strftime('%d %B %Y') }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <strong>Total Certificates:</strong><br>
+                        <span class="badge bg-primary">{{ certificates_count if certificates_count else '0' }}</span>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <strong>Authentication:</strong><br>
+                        <span class="badge bg-info">Google OAuth</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-shield-alt me-2"></i>
+                        Security
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted small">
+                        Your account is secured through Google OAuth authentication. 
+                        You can revoke access anytime from your Google account settings.
+                    </p>
+                    
+                    <div class="d-grid">
+                        <a href="/logout" class="btn btn-outline-danger">
+                            <i class="fas fa-sign-out-alt me-1"></i>
+                            Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Register - DocuMed{% endblock %}
+
+{% block extra_js %}
+<script>
+function togglePasswordSuggestions() {
+    const suggestionsDiv = document.getElementById('passwordSuggestions');
+    if (suggestionsDiv) {
+        const currentDisplay = window.getComputedStyle(suggestionsDiv).display;
+        if (currentDisplay === 'none' || currentDisplay === '') {
+            suggestionsDiv.style.display = 'block';
+        } else {
+            suggestionsDiv.style.display = 'none';
+        }
+    }
+}
+
+function showPasswordSuggestions() {
+    const suggestionsDiv = document.getElementById('passwordSuggestions');
+    if (suggestionsDiv) {
+        suggestionsDiv.style.display = 'block';
+    }
+}
+
+function hidePasswordSuggestions() {
+    const suggestionsDiv = document.getElementById('passwordSuggestions');
+    if (suggestionsDiv) {
+        suggestionsDiv.style.display = 'none';
+    }
+}
+
+// Add event listeners when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    const passwordField = document.getElementById('password');
+    if (passwordField) {
+        // Show suggestions on focus
+        passwordField.addEventListener('focus', showPasswordSuggestions);
+        // Hide suggestions when clicking outside
+        document.addEventListener('click', function(event) {
+            const suggestionsDiv = document.getElementById('passwordSuggestions');
+            if (suggestionsDiv && !suggestionsDiv.contains(event.target) && event.target !== passwordField) {
+                hidePasswordSuggestions();
+            }
+        });
+    }
+});
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-user-plus me-2"></i>
+                        Doctor Registration
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% if error %}
+                    <div class="alert alert-danger" role="alert">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <div>{{ error|safe }}</div>
+                    </div>
+                    {% endif %}
+                    
+                    <form method="post" action="/register">
+                        <div class="mb-3">
+                            <label for="name" class="form-label required-field">Full Name</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="email" class="form-label required-field">Email Address</label>
+                            <input type="email" class="form-control" id="email" name="email" required 
+                                   title="Use professional email (e.g., dr.name@hospital.com)">
+                            <small class="text-muted">Professional email recommended (e.g., dr.name@hospital.com)</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="password" class="form-label required-field">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required minlength="8" maxlength="72" 
+                                   pattern="(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,72}" 
+                                   title="Must contain 8-72 characters, including uppercase, lowercase, digit, and special character">
+                            <small class="text-muted">8-72 characters</small>
+                            <div id="passwordSuggestions" class="alert alert-info mt-2" style="display: none;">
+                                <h6><i class="fas fa-lightbulb me-2"></i>Strong Password Examples:</h6>
+                                <ul class="mb-0">
+                                    <li><code>Medical2024!</code></li>
+                                    <li><code>Doctor@2024</code></li>
+                                    <li><code>Med!cal#2024</code></li>
+                                    <li><code>Dr.Cert#2024</code></li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="medical_registration_number" class="form-label required-field">Medical Registration Number</label>
+                            <input type="text" class="form-control" id="medical_registration_number" name="medical_registration_number" required>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-user-plus me-1"></i>
+                                Register
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="text-center mt-3">
+                <p>Already have an account? <a href="/login">Login here</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

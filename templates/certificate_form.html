@@ -1,0 +1,470 @@
+{% extends "base.html" %}
+
+{% block title %}New Medical Certificate - Medical Certificate System{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-section {
+        background-color: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        margin-bottom: 25px;
+    }
+    
+    .section-title {
+        color: var(--primary-color);
+        font-weight: bold;
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid var(--secondary-color);
+    }
+    
+    .conditional-field {
+        margin-left: 20px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 5px;
+        margin-top: 10px;
+    }
+    
+    .form-row {
+        margin-bottom: 15px;
+    }
+    
+    .radio-group, .checkbox-group {
+        padding: 10px;
+        background-color: #f8f9fa;
+        border-radius: 5px;
+    }
+    
+    .radio-group label, .checkbox-group label {
+        margin-right: 20px;
+        font-weight: normal;
+    }
+    
+    .form-check-input {
+        margin-right: 8px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2><i class="fas fa-file-medical me-2"></i>New Medical Certificate</h2>
+            <p class="text-muted">Fill in all the required information to generate a medical certificate.</p>
+        </div>
+    </div>
+
+    <form method="post" action="/certificate/new" id="certificateForm">
+        <!-- Candidate Details Section -->
+        <div class="form-section">
+            <h3 class="section-title">1. Candidate Details</h3>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-row">
+                        <label for="candidate_name" class="form-label required-field">Name of the Candidate</label>
+                        <input type="text" class="form-control" id="candidate_name" name="candidate_name" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-row">
+                        <label for="identification_mark" class="form-label required-field">Identification Mark</label>
+                        <input type="text" class="form-control" id="identification_mark" name="identification_mark" 
+                               placeholder="mole / scar / birthmark" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-row">
+                        <label class="form-label required-field">Major Illness / Operation</label>
+                        <div class="checkbox-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="major_illness_operation" name="major_illness_operation" value="true">
+                                <label class="form-check-label" for="major_illness_operation">Yes</label>
+                            </div>
+                        </div>
+                        <div id="major_illness_details_field" class="conditional-field" style="display: none;">
+                            <label for="major_illness_details" class="form-label">If Yes, specify nature of illness/operation</label>
+                            <textarea class="form-control" id="major_illness_details" name="major_illness_details" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-row">
+                        <label for="height_cm" class="form-label required-field">Height in cm</label>
+                        <input type="number" class="form-control" id="height_cm" name="height_cm" min="50" max="250" required>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-row">
+                        <label for="weight_kg" class="form-label required-field">Weight in kg</label>
+                        <input type="number" class="form-control" id="weight_kg" name="weight_kg" min="10" max="200" required>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-row">
+                        <label for="blood_group" class="form-label required-field">Blood Group</label>
+                        <select class="form-select" id="blood_group" name="blood_group" required>
+                            <option value="">Select Blood Group</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Past History Section -->
+        <div class="form-section">
+            <h3 class="section-title">2. Past History</h3>
+            
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-row">
+                        <label class="form-label required-field">Mental Illness</label>
+                        <div class="checkbox-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="mental_illness" name="mental_illness" value="true">
+                                <label class="form-check-label" for="mental_illness">Yes</label>
+                            </div>
+                        </div>
+                        <div id="mental_illness_details_field" class="conditional-field" style="display: none;">
+                            <label for="mental_illness_details" class="form-label">If Yes, provide details</label>
+                            <textarea class="form-control" id="mental_illness_details" name="mental_illness_details" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-row">
+                        <label class="form-label required-field">Epileptic Fits</label>
+                        <div class="checkbox-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="epileptic_fits" name="epileptic_fits" value="true">
+                                <label class="form-check-label" for="epileptic_fits">Yes</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Medical Examination Section -->
+        <div class="form-section">
+            <h3 class="section-title">3. Medical Examination</h3>
+            
+            <h4 class="mb-3">Chest</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-row">
+                        <label for="chest_inspiration_cm" class="form-label required-field">Inspiration in cm</label>
+                        <input type="number" class="form-control" id="chest_inspiration_cm" name="chest_inspiration_cm" min="1" max="50" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-row">
+                        <label for="chest_expiration_cm" class="form-label required-field">Expiration in cm</label>
+                        <input type="number" class="form-control" id="chest_expiration_cm" name="chest_expiration_cm" min="1" max="50" required>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="mb-3 mt-4">Hearing</h4>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-row">
+                        <label class="form-label required-field">Hearing Status</label>
+                        <div class="radio-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="hearing_normal" name="hearing_status" value="Normal" required>
+                                <label class="form-check-label" for="hearing_normal">Normal</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="hearing_abnormal" name="hearing_status" value="Abnormal" required>
+                                <label class="form-check-label" for="hearing_abnormal">Abnormal</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="mb-3 mt-4">Vision (with or without glasses)</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-row">
+                        <label for="vision_right_eye" class="form-label required-field">Right Eye</label>
+                        <input type="text" class="form-control" id="vision_right_eye" name="vision_right_eye" placeholder="e.g., 6/6" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-row">
+                        <label for="vision_left_eye" class="form-label required-field">Left Eye</label>
+                        <input type="text" class="form-control" id="vision_left_eye" name="vision_left_eye" placeholder="e.g., 6/6" required>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="mb-3 mt-4">Systems Examination</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-row">
+                        <label class="form-label required-field">Respiratory System</label>
+                        <div class="radio-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="respiratory_normal" name="respiratory_system" value="Normal" required>
+                                <label class="form-check-label" for="respiratory_normal">Normal</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="respiratory_abnormal" name="respiratory_system" value="Abnormal" required>
+                                <label class="form-check-label" for="respiratory_abnormal">Abnormal</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-row">
+                        <label class="form-label required-field">Nervous System</label>
+                        <div class="radio-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="nervous_normal" name="nervous_system" value="Normal" required>
+                                <label class="form-check-label" for="nervous_normal">Normal</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="nervous_abnormal" name="nervous_system" value="Abnormal" required>
+                                <label class="form-check-label" for="nervous_abnormal">Abnormal</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="mb-3 mt-4">Heart</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-row">
+                        <label class="form-label required-field">Sounds</label>
+                        <div class="radio-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="heart_sounds_normal" name="heart_sounds" value="Normal" required>
+                                <label class="form-check-label" for="heart_sounds_normal">Normal</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="heart_sounds_abnormal" name="heart_sounds" value="Abnormal" required>
+                                <label class="form-check-label" for="heart_sounds_abnormal">Abnormal</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-row">
+                        <label class="form-label required-field">Murmur</label>
+                        <div class="radio-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="heart_murmur_present" name="heart_murmur" value="Present" required>
+                                <label class="form-check-label" for="heart_murmur_present">Present</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="heart_murmur_absent" name="heart_murmur" value="Absent" required>
+                                <label class="form-check-label" for="heart_murmur_absent">Absent</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="mb-3 mt-4">Abdomen</h4>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-row">
+                        <label class="form-label required-field">Liver</label>
+                        <div class="radio-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="liver_normal" name="liver_status" value="Normal" required>
+                                <label class="form-check-label" for="liver_normal">Normal</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="liver_enlarged" name="liver_status" value="Enlarged" required>
+                                <label class="form-check-label" for="liver_enlarged">Enlarged</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-row">
+                        <label class="form-label required-field">Spleen</label>
+                        <div class="radio-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="spleen_normal" name="spleen_status" value="Normal" required>
+                                <label class="form-check-label" for="spleen_normal">Normal</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="spleen_enlarged" name="spleen_status" value="Enlarged" required>
+                                <label class="form-check-label" for="spleen_enlarged">Enlarged</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-row">
+                        <label class="form-label required-field">Hydrocele</label>
+                        <div class="radio-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="hydrocele_present" name="hydrocele_status" value="Present" required>
+                                <label class="form-check-label" for="hydrocele_present">Present</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="hydrocele_absent" name="hydrocele_status" value="Absent" required>
+                                <label class="form-check-label" for="hydrocele_absent">Absent</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-row">
+                        <label for="other_defects" class="form-label">Any Other Defects</label>
+                        <textarea class="form-control" id="other_defects" name="other_defects" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Certificate of Medical Fitness Section -->
+        <div class="form-section">
+            <h3 class="section-title">4. Certificate of Medical Fitness</h3>
+            
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-row">
+                        <label class="form-label required-field">Medical Fitness Status</label>
+                        <div class="radio-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="fitness_fit" name="medical_fitness_status" value="FIT" required>
+                                <label class="form-check-label" for="fitness_fit">FIT</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="fitness_unfit" name="medical_fitness_status" value="UNFIT" required>
+                                <label class="form-check-label" for="fitness_unfit">UNFIT</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-row">
+                        <label for="examination_date" class="form-label required-field">Date of Examination</label>
+                        <input type="date" class="form-control" id="examination_date" name="examination_date" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>
+                <strong>Statement:</strong> "The candidate fulfills the prescribed standard of physical fitness, medical fitness and is FIT / UNFIT for admission to Engineering / Architecture / Pharmacy / Paramedical course."
+            </div>
+        </div>
+
+        <!-- Doctor's Details Section -->
+        <div class="form-section">
+            <h3 class="section-title">5. Doctor's Details (Auto-filled)</h3>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-row">
+                        <label class="form-label">Name of the Doctor</label>
+                        <input type="text" class="form-control" value="{{ doctor.name }}" readonly>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-row">
+                        <label class="form-label">Google Email ID</label>
+                        <input type="email" class="form-control" value="{{ doctor.email }}" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-row">
+                        <label class="form-label">Medical Registration Number</label>
+                        <input type="text" class="form-control" value="{{ doctor.medical_registration_number or 'Not Provided' }}" readonly>
+                        <small class="text-muted">You can update your medical registration number in your profile.</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between">
+                    <a href="/dashboard" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-1"></i>
+                        Back to Dashboard
+                    </a>
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-save me-1"></i>
+                        Generate Certificate
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Set today's date as default
+    document.getElementById('examination_date').valueAsDate = new Date();
+    
+    // Show/hide conditional fields
+    document.getElementById('major_illness_operation').addEventListener('change', function() {
+        document.getElementById('major_illness_details_field').style.display = this.checked ? 'block' : 'none';
+    });
+    
+    document.getElementById('mental_illness').addEventListener('change', function() {
+        document.getElementById('mental_illness_details_field').style.display = this.checked ? 'block' : 'none';
+    });
+    
+    // Form validation
+    document.getElementById('certificateForm').addEventListener('submit', function(e) {
+        // Check if conditional fields are required
+        if (document.getElementById('major_illness_operation').checked && !document.getElementById('major_illness_details').value.trim()) {
+            e.preventDefault();
+            alert('Please provide details for major illness/operation.');
+            return;
+        }
+        
+        if (document.getElementById('mental_illness').checked && !document.getElementById('mental_illness_details').value.trim()) {
+            e.preventDefault();
+            alert('Please provide details for mental illness.');
+            return;
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Home - DocuMed{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="container">
+        <h1 class="display-4 fw-bold">DocuMed</h1>
+        <p class="lead">Professional Medical Certificate Management for Healthcare Providers</p>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card bg-white text-dark">
+                    <div class="card-body p-4">
+                        <h3 class="card-title text-center mb-4">
+                            <i class="fas fa-user-md me-2"></i>
+                            Doctor Portal
+                        </h3>
+                        <p class="text-center mb-4">
+                            Access the medical certificate management system with your doctor account.
+                        </p>
+                        <div class="text-center">
+                            <a href="/login" class="btn btn-primary btn-lg me-2">
+                                <i class="fas fa-sign-in-alt me-2"></i>
+                                Doctor Login
+                            </a>
+                            <a href="/register" class="btn btn-success btn-lg">
+                                <i class="fas fa-user-plus me-2"></i>
+                                New Registration
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-file-medical fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Create Certificates</h5>
+                    <p class="card-text">
+                        Generate professional medical certificates following official examination formats.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-search fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Search & Manage</h5>
+                    <p class="card-text">
+                        Easily search and manage all your medical certificates in one place.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-file-pdf fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">PDF Downloads</h5>
+                    <p class="card-text">
+                        Download certificates in professional PDF format for printing and sharing.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>System Features</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <i class="fas fa-check-circle text-success me-2"></i>
+                                    <strong>Secure Authentication:</strong> Google OAuth for doctors
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check-circle text-success me-2"></i>
+                                    <strong>Complete Medical Forms:</strong> All mandatory fields included
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check-circle text-success me-2"></i>
+                                    <strong>Professional Layout:</strong> Hospital-grade certificate design
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <i class="fas fa-check-circle text-success me-2"></i>
+                                    <strong>Database Storage:</strong> MySQL backend for reliability
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check-circle text-success me-2"></i>
+                                    <strong>Search Functionality:</strong> Find certificates by name or date
+                                </li>
+                                <li class="mb-2">
+                                    <i class="fas fa-check-circle text-success me-2"></i>
+                                    <strong>PDF Generation:</strong> Download printable certificates
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
